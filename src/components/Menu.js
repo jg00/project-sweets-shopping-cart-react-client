@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 import "./styles/Menu.css";
 
 class Menu extends Component {
@@ -22,10 +23,19 @@ class Menu extends Component {
           <li className="div-menu-li">
             <Link to="/AddProduct">Add Product</Link>
           </li>
+          {/* <li>{this.props.user.name}</li> */}
         </ul>
       </div>
     );
   }
 }
 
-export default Menu;
+const mapStateToProps = state => {
+  return {
+    isAuth: state.isAuth
+    // user: state.user
+  };
+};
+
+export default connect(mapStateToProps)(Menu);
+// export default Menu;

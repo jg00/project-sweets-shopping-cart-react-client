@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import axios from "axios";
 import { setAuthenticationToken } from "../utils";
 const LOGIN_URL = "http://localhost:3001/api/auth/";
@@ -10,6 +11,17 @@ class Login extends Component {
     this.state = {
       user: {}
     };
+  }
+
+  componentDidMount() {
+    const token = localStorage.getItem("jsonwebtoken");
+    // console.log("test");
+    if (!token || token === "undefined") {
+      console.log("Not authorized");
+    } else {
+      console.log("Authorized");
+      this.props.onAuthenticate();
+    }
   }
 
   handleTextBoxOnChange = e => {
@@ -25,14 +37,35 @@ class Login extends Component {
     axios
       .post(LOGIN_URL, user)
       .then(response => {
-        console.log(response);
+        console.log(response.data);
 
+        /* works
         // save the token to localStorage so we can access it later on
         localStorage.setItem("jsonwebtoken", response.data.token);
         // put the token in the request header
         setAuthenticationToken(response.data.token);
+        */
 
-        window.location = "/";
+        if (response.data.success === false) {
+          console.log("false");
+        } else {
+          console.log("blah");
+
+          // save the token to localStorage so we can access it later on
+          localStorage.setItem("jsonwebtoken", response.data.token);
+          // put the token in the request header
+          setAuthenticationToken(response.data.token);
+          console.log(response.data); // response.data
+          this.props.onAuthenticate();
+          this.props.history.push("/");
+        }
+
+        // window.location = "/";
+        // console.log(response.data.token);
+        // if (response.data.token !== "undefined") {
+        //   this.props.history.push("/");
+        // }
+        // this.props.history.push("/");
       })
       .catch(rejected => {
         console.log("Login user connection error: ", rejected);
@@ -66,4 +99,18 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = dispatch => {
+  return {
+    // onAuthenticate: userData =>
+    onAuthenticate: () =>
+      dispatch({
+        type: "SET_AUTHENTICATE"
+        // userData: userData
+      })
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Login);

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Switch, Route } from "react-router-dom";
+// import { connect } from "react-redux";
 import Menu from "./Menu";
 import AllItems from "./AllItems";
 import AddItem from "./AddItem";
@@ -8,6 +9,24 @@ import Register from "./Register";
 import AddProduct from "./AddProduct";
 
 class BaseLayout extends Component {
+  // componentDidMount() {
+  //   const token = localStorage.getItem("jsonwebtoken");
+
+  // if (!token) {
+  //   console.log(token);
+  // this.props.onAuthenticate();
+  // }
+  // }
+
+  // componentDidMount() {
+  //   const token = localStorage.getItem("jsonwebtoken");
+  //   // console.log("test");
+  //   // if (!token) {
+  //   console.log(token);
+  //   // this.props.onAuthenticate();
+  //   // }
+  // }
+
   render() {
     return (
       <div>
@@ -24,4 +43,17 @@ class BaseLayout extends Component {
   }
 }
 
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     onAuthenticate: () =>
+//       dispatch({
+//         type: "SET_AUTHENTICATE"
+//       })
+//   };
+// };
+
 export default BaseLayout;
+// export default connect(
+//   null,
+//   mapDispatchToProps
+// )(BaseLayout);
