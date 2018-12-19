@@ -17,7 +17,7 @@ class Login extends Component {
     const token = localStorage.getItem("jsonwebtoken");
     // console.log("test");
     if (!token || token === "undefined") {
-      console.log("Not authorized");
+      console.log("Not Authorized");
     } else {
       console.log("Authorized");
       this.props.onAuthenticate();
@@ -37,34 +37,24 @@ class Login extends Component {
     axios
       .post(LOGIN_URL, user)
       .then(response => {
-        console.log(response.data);
-
-        /* works
-        // save the token to localStorage so we can access it later on
-        localStorage.setItem("jsonwebtoken", response.data.token);
-        // put the token in the request header
-        setAuthenticationToken(response.data.token);
-        */
+        // console.log(response.data);
 
         if (response.data.success === false) {
-          console.log("false");
+          console.log("Login.js > handleLoginButtonClick - false");
         } else {
-          console.log("blah");
+          console.log("Login.js > handleLoginButtonClick - true");
 
           // save the token to localStorage so we can access it later on
           localStorage.setItem("jsonwebtoken", response.data.token);
           // put the token in the request header
           setAuthenticationToken(response.data.token);
           console.log(response.data); // response.data
-          this.props.onAuthenticate();
+          // this.props.onAuthenticate()  // before sendin param;
+          this.props.onAuthenticate(response.data);
           this.props.history.push("/");
         }
 
         // window.location = "/";
-        // console.log(response.data.token);
-        // if (response.data.token !== "undefined") {
-        //   this.props.history.push("/");
-        // }
         // this.props.history.push("/");
       })
       .catch(rejected => {
@@ -101,12 +91,8 @@ class Login extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    // onAuthenticate: userData =>
-    onAuthenticate: () =>
-      dispatch({
-        type: "SET_AUTHENTICATE"
-        // userData: userData
-      })
+    onAuthenticate: responseData =>
+      dispatch({ type: "SET_AUTHENTICATE", responseData: responseData })
   };
 };
 

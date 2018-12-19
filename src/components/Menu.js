@@ -11,19 +11,51 @@ class Menu extends Component {
           <li className="div-menu-li">
             <Link to="/">All Items</Link>
           </li>
-          <li className="div-menu-li">
+
+          {/* <li className="div-menu-li">
             <Link to="/AddItem">Add Item</Link>
-          </li>
-          <li className="div-menu-li">
-            <Link to="/Login">Login</Link>
-          </li>
-          <li className="div-menu-li">
-            <Link to="/Register">Register</Link>
-          </li>
-          <li className="div-menu-li">
+          </li> */}
+
+          {/* {this.props.isAuth && (
+            <li className="div-menu-li">
+              <Link to="/Login">Logoutsss</Link>
+            </li>
+          )}
+          {!this.props.isAuth && (
+            <li className="div-menu-li">
+              <Link to="/Login">Loginsss</Link>
+            </li>
+          )} */}
+
+          {this.props.isAuth ? (
+            <li className="div-menu-li">
+              <Link to="/Logout" onClick={this.props.onAuthenticate}>
+                Logout
+              </Link>
+            </li>
+          ) : (
+            <li className="div-menu-li">
+              <Link to="/Login">Login</Link>
+            </li>
+          )}
+
+          {this.props.isAuth ? null : (
+            <li className="div-menu-li">
+              <Link to="/Register">Register</Link>
+            </li>
+          )}
+
+          {/* <li className="div-menu-li">
             <Link to="/AddProduct">Add Product</Link>
-          </li>
-          {/* <li>{this.props.user.name}</li> */}
+          </li> */}
+
+          {this.props.isAuth && this.props.userData.isAdmin && (
+            <li className="div-menu-li">
+              <Link to="/AddProduct">Add Product</Link>
+            </li>
+          )}
+
+          <div>{this.props.isAuth ? "true" : "false"}</div>
         </ul>
       </div>
     );
@@ -32,10 +64,18 @@ class Menu extends Component {
 
 const mapStateToProps = state => {
   return {
-    isAuth: state.isAuth
-    // user: state.user
+    isAuth: state.isAuth,
+    userData: state.user
   };
 };
 
-export default connect(mapStateToProps)(Menu);
-// export default Menu;
+const mapDispatchToProps = dispatch => {
+  return {
+    onAuthenticate: () => dispatch({ type: "SET_AUTHENTICATE" })
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Menu);
