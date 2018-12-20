@@ -28,6 +28,8 @@ class AllItems extends Component {
       // this.props.onAuthenticateManuallySet(true);  // before adding decode
       this.props.onAuthenticateManuallySet(true, formattedTokenInfo);
     }
+
+    // Load all items section
   }
 
   // componentDidMount() {

@@ -9,8 +9,13 @@ class Menu extends Component {
       <div className="div-menu">
         <ul className="div-menu-ul">
           <li className="div-menu-li">
-            <Link to="/">All Items</Link>
+            <Link to="/">Products</Link>
           </li>
+
+          {/* </li>
+          <li className="div-menu-li">
+            <Link to="/">All Items</Link>
+          </li> */}
 
           {/* <li className="div-menu-li">
             <Link to="/AddItem">Add Item</Link>

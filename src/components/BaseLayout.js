@@ -7,6 +7,7 @@ import Login from "./Login";
 import Logout from "./Logout";
 import Register from "./Register";
 import AddProduct from "./AddProduct";
+import AllProducts from "./AllProducts";
 
 class BaseLayout extends Component {
   render() {
@@ -14,12 +15,14 @@ class BaseLayout extends Component {
       <div>
         <Menu />
         <Switch>
-          <Route exact path="/" component={AllItems} />
+          <Route exact path="/" component={AllProducts} />
+          {/* <Route exact path="/" component={AllItems} /> */}
           {/* <Route path="/AddItem" component={AddItem} /> */}
           <Route path="/Login" component={Login} />
           <Route path="/Logout" component={Logout} />
           <Route path="/Register" component={Register} />
           <Route path="/AddProduct" component={AddProduct} />
+          {/* <Route path="/AllProducts" component={AllProducts} /> */}
         </Switch>
       </div>
     );
