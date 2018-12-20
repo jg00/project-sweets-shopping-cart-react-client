@@ -56,7 +56,7 @@ class AddProduct extends Component {
     // console.log(this.state.book);
 
     let product = this.state.product;
-    console.log("test product", product);
+    // console.log("test product", product);
 
     /*
     const token = localStorage.getItem("jsonwebtoken");
@@ -65,6 +65,7 @@ class AddProduct extends Component {
     setAuthenticationToken(token);
 */
 
+    // need to move this to redux to update the products list
     axios
       .post(ADD_PRODUCT_URL, product)
       .then(response => {
@@ -74,14 +75,17 @@ class AddProduct extends Component {
 
         const result = response.data;
         console.log(result);
-        console.log(result.message);
+        // console.log(result.message);
 
         // if (result.success) {
         // console.log("t");
 
+        /// continue here  **********************  need to check if product returned and then add to global state
+
         this.setState({
           ...this.state,
           // product: result
+          // result: result.message
           result: result.message
         });
       })
