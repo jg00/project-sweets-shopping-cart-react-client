@@ -3,12 +3,13 @@ import { connect } from "react-redux";
 import jwtDecode from "jwt-decode";
 import axios from "axios";
 const ADD_PRODUCT_URL = "http://localhost:3001/api/products/add";
+const ALL_PRODUCTS_URL = "http://localhost:3001/api/products/display";
 
 class AddProduct extends Component {
   constructor(props) {
     super(props);
 
-    console.log("addproduct", this.props);
+    // console.log("addproduct", this.props);
 
     this.state = {
       product: {},
@@ -73,14 +74,37 @@ class AddProduct extends Component {
         console.log("Product added: ", response.data);
         // this.props.history.push("/");
 
-        const result = response.data;
-        console.log(result);
+        let result = response.data._id;
+        // console.log(result);
         // console.log(result.message);
 
         // if (result.success) {
         // console.log("t");
 
         /// continue here  **********************  need to check if product returned and then add to global state
+        // Only append to redux products list if no issues adding to the database
+        if (result.success !== false) {
+          // If redux list was refreshed and current list of products becomes zero check the db and reload
+          // console.log(this.props.products.length);
+          if (this.props.products.length === 0) {
+            // Load all items section from the database including the new one just added
+            axios(ALL_PRODUCTS_URL)
+              .then(response => {
+                const allProducts = response.data; // array
+                // this.setState({ products: allProducts });
+                // this.props.onProductsChange({ products: allProducts }); // array old
+                this.props.onProductsChange(allProducts); // array
+
+                // console.log(response.data);
+              })
+              .catch(rejected => {
+                console.log("Unable to get all orders: ", rejected);
+              });
+          } else {
+            // then add new item to redux stat
+            this.props.onProductAdd(response.data);
+          }
+        }
 
         this.setState({
           ...this.state,
@@ -132,6 +156,12 @@ class AddProduct extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    products: state.products // array
+  };
+};
+
 const mapDispatchToProps = dispatch => {
   return {
     onAuthenticateManuallySet: (boolValue, tokenInfo) =>
@@ -139,13 +169,27 @@ const mapDispatchToProps = dispatch => {
         type: "SET_AUTHENTICATE_MANUALLY",
         boolValue: boolValue,
         tokenInfo: tokenInfo
+      }),
+
+    onProductsChange: allProducts =>
+      dispatch({
+        type: "SET_PRODUCTS_LIST",
+        allProducts: allProducts
+      }),
+
+    onProductAdd: product =>
+      dispatch({
+        type: "ADD_TO_PRODUCT_LIST",
+        product: product
+        // productId: id,
+        // DELETE_PRODUCT_URL: DELETE_PRODUCT_URL
       })
   };
 };
 
 export default connect(
-  // mapStateToProps,
-  null,
+  mapStateToProps,
+
   mapDispatchToProps
 )(AddProduct);
 

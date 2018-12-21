@@ -47,6 +47,17 @@ const reducer = (state = initialState, action) => {
       products: initializedArray
     };
   }
+
+  if (action.type === "ADD_TO_PRODUCT_LIST") {
+    return {
+      ...state,
+      products: state.products.concat(action.product)
+      // isAuth: true
+      // user: action.tokenInfo,
+      // isAuth: action.boolValue
+    };
+  }
+
   if (action.type === "DELETE_PRODUCT") {
     console.log(action.productId);
     // console.log("in del", state.products);

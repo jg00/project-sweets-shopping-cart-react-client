@@ -64,7 +64,7 @@ class Menu extends Component {
             <Link to="/Donate">Donate</Link>
           </li>
 
-          <div>{this.props.isAuth ? "true" : "false"}</div>
+          {/* <div>{this.props.isAuth ? "true" : "false"}</div> */}
         </ul>
       </div>
     );

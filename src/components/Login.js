@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import jwtDecode from "jwt-decode";
 import axios from "axios";
 import { setAuthenticationToken } from "../utils";
 const LOGIN_URL = "http://localhost:3001/api/auth/";
@@ -20,7 +21,22 @@ class Login extends Component {
       console.log("Not Authorized");
     } else {
       console.log("Authorized");
-      this.props.onAuthenticate();
+      // this.props.onAuthenticate();  // was causing error when no token available
+
+      // Need to get payload userData from the token in localstore
+      const tokenInfo = jwtDecode(token);
+      console.log("tokeninfo - ", tokenInfo); // {email: "sam@mail.com", name: "Sam", isAdmin: true, iat: 1545188894 }
+
+      const formattedTokenInfo = {
+        email: tokenInfo.email,
+        name: tokenInfo.name,
+        isAdmin: tokenInfo.isAdmin
+      };
+
+      // If page "Refreshed" manually override redux property isAuth: true
+      // this.props.onAuthenticate();
+      // this.props.onAuthenticateManuallySet(true);  // before adding decode
+      this.props.onAuthenticateManuallySet(true, formattedTokenInfo);
     }
   }
 
@@ -92,7 +108,14 @@ class Login extends Component {
 const mapDispatchToProps = dispatch => {
   return {
     onAuthenticate: responseData =>
-      dispatch({ type: "SET_AUTHENTICATE", responseData: responseData })
+      dispatch({ type: "SET_AUTHENTICATE", responseData: responseData }),
+
+    onAuthenticateManuallySet: (boolValue, tokenInfo) =>
+      dispatch({
+        type: "SET_AUTHENTICATE_MANUALLY",
+        boolValue: boolValue,
+        tokenInfo: tokenInfo
+      })
   };
 };
 

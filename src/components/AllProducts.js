@@ -101,14 +101,51 @@ class AllProducts extends Component {
           <div>{product.product.name} </div>
           <div>{product.product.type} </div>
           <div>{product.product.price} </div>
-          <button
+          {/* <div>
+            {this.props.isAuth && this.props.userData.isAdmin && (
+              <div>admin show</div>
+            )}
+          </div> */}
+
+          {/* <button
             onClick={() =>
               this.props.onProductDelete(product._id, DELETE_PRODUCT_URL)
             }
             // onClick={() => this.handleDeleteProductButtonClick(product._id)} // for state
           >
             Delete Product
-          </button>
+          </button> */}
+
+          {/* {this.props.isAuth && this.props.userData.isAdmin && (
+            <button
+              onClick={() =>
+                this.props.onProductDelete(product._id, DELETE_PRODUCT_URL)
+              }
+              // onClick={() => this.handleDeleteProductButtonClick(product._id)} // for state
+            >
+              Delete Product
+            </button>
+          )} */}
+
+          {this.props.isAuth && this.props.userData.isAdmin ? (
+            <button
+              onClick={() =>
+                this.props.onProductDelete(product._id, DELETE_PRODUCT_URL)
+              }
+              // onClick={() => this.handleDeleteProductButtonClick(product._id)} // for state
+            >
+              Delete Product
+            </button>
+          ) : (
+            <button
+            // onClick={() =>
+            //   this.props.onProductDelete(product._id, DELETE_PRODUCT_URL)
+            // }
+            // onClick={() => this.handleDeleteProductButtonClick(product._id)} // for state
+            >
+              Add to cart
+            </button>
+          )}
         </div>
       );
     });
@@ -156,7 +193,10 @@ class AllProducts extends Component {
 
 const mapStateToProps = state => {
   return {
-    products: state.products // array
+    products: state.products, // array
+
+    isAuth: state.isAuth,
+    userData: state.user
   };
 };
 
